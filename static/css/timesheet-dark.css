@@ -121,12 +121,8 @@ body {
   align-items: center;
   gap: 8px;
   font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.month-stats .stat i {
-  font-style: normal;
-  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .btn-today {
