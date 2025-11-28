@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil - Sistema de Ponto{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            <i data-lucide="edit" class="w-7 h-7 mr-2"></i>
+            Editar Perfil
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Atualize suas informações</p>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+            <h2 class="text-lg font-semibold text-white">Informações Editáveis</h2>
+        </div>
+
+        <!-- Form -->
+        <form method="post" action="{% url 'perfil_editar' %}" class="px-6 py-6">
+            {% csrf_token %}
+
+            <div class="space-y-6">
+                <!-- Read-only Info Section -->
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+                        Informações Fixas (não editáveis)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Username -->
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                                Usuário
+                            </label>
+                            <p class="text-gray-600 dark:text-gray-300 font-medium">{{ user.username }}</p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                                E-mail
+                            </label>
+                            <p class="text-gray-600 dark:text-gray-300 font-medium">{{ user.email }}</p>
+                        </div>
+
+                        <!-- Cargo -->
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                                Cargo
+                            </label>
+                            <p class="text-gray-600 dark:text-gray-300 font-medium capitalize">
+                                {{ user.profile.cargo|default:"-" }}
+                            </p>
+                        </div>
+
+                        <!-- Data Admissão -->
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                                Data de Admissão
+                            </label>
+                            <p class="text-gray-600 dark:text-gray-300 font-medium">
+                                {% if user.profile.data_admissao %}
+                                    {{ user.profile.data_admissao|date:"d/m/Y" }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editable Fields Section -->
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+                        Campos Editáveis
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Valor Hora -->
+                        <div>
+                            <label for="valor_hora" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Valor por Hora (R$) *
+                            </label>
+                            <input
+                                type="number"
+                                name="valor_hora"
+                                id="valor_hora"
+                                step="0.01"
+                                min="0"
+                                required
+                                value="{{ user.profile.valor_hora|default:'0.00' }}"
+                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="0.00"
+                            >
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                Valor utilizado para cálculo de salário
+                            </p>
+                        </div>
+
+                        <!-- Departamento -->
+                        <div>
+                            <label for="departamento" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Departamento
+                            </label>
+                            <input
+                                type="text"
+                                name="departamento"
+                                id="departamento"
+                                value="{{ user.profile.departamento|default:'' }}"
+                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Ex: TI, RH, Vendas"
+                            >
+                        </div>
+
+                        <!-- Telefone -->
+                        <div>
+                            <label for="telefone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Telefone
+                            </label>
+                            <input
+                                type="tel"
+                                name="telefone"
+                                id="telefone"
+                                value="{{ user.profile.telefone|default:'' }}"
+                                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="(00) 00000-0000"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <a
+                        href="{% url 'perfil' %}"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
+                        Cancelar
+                    </a>
+                    <button
+                        type="submit"
+                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+                        Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

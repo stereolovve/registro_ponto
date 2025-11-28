@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Sistema de Ponto{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
+            <i data-lucide="layout-dashboard" class="w-8 h-8 mr-3"></i>
+            Dashboard
+        </h1>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">{{ mes_atual }} de {{ ano_atual }}</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Horas Trabalhadas -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase">Horas Trabalhadas</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ horas_mes_atual }}h</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">No mês atual</p>
+                </div>
+                <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
+                    <i data-lucide="clock" class="w-8 h-8 text-blue-600 dark:text-blue-300"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Previsão de Salário -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase">Previsão de Salário</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">R$ {{ previsao_salario|floatformat:2 }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Baseado nas horas</p>
+                </div>
+                <div class="p-3 bg-green-100 dark:bg-green-900 rounded-full">
+                    <i data-lucide="dollar-sign" class="w-8 h-8 text-green-600 dark:text-green-300"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total de Registros -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase">Registros de Ponto</p>
+                    <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ total_registros_mes }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Dias trabalhados</p>
+                </div>
+                <div class="p-3 bg-purple-100 dark:bg-purple-900 rounded-full">
+                    <i data-lucide="calendar-check" class="w-8 h-8 text-purple-600 dark:text-purple-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <i data-lucide="zap" class="w-5 h-5 mr-2"></i>
+            Ações Rápidas
+        </h2>
+        <div class="grid grid-cols-1 gap-4">
+            <!-- Abrir Timesheet -->
+            <a href="{% url 'timesheet' %}" class="flex items-center p-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg text-white transition-all duration-200 shadow-md hover:shadow-lg">
+                <div class="p-3 bg-white/20 rounded-lg mr-4">
+                    <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg">Abrir Timesheet</h3>
+                    <p class="text-sm text-blue-100">Registrar e visualizar pontos de forma unificada</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+        <div class="flex items-start">
+            <i data-lucide="info" class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 mt-0.5"></i>
+            <div>
+                <h3 class="font-semibold text-blue-900 dark:text-blue-200">Informações Importantes</h3>
+                <p class="text-sm text-blue-800 dark:text-blue-300 mt-1">
+                    Os valores apresentados são calculados com base no seu valor hora de <strong>R$ {{ user.profile.valor_hora|floatformat:2 }}</strong>.
+                    Para atualizar, acesse seu <a href="{% url 'perfil' %}" class="underline font-medium">perfil</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

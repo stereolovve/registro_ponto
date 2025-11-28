@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Controle de Ponto{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/timesheet-dark.css' %}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 fixed w-full z-30 top-0">
+        <div class="px-4 py-3 lg:px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="mr-2 text-gray-600 dark:text-gray-300 lg:hidden">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <span class="text-xl font-semibold dark:text-white">Sistema de Ponto</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline">
+                        Olá, {{ user.first_name|default:user.username }}!
+                    </span>
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                            <span class="hidden sm:inline">Sair</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 z-40 h-screen pt-16 transition-transform -translate-x-full bg-white border-r border-gray-200 lg:translate-x-0 dark:bg-gray-800 dark:border-gray-700" style="width: 300px;">
+        <div class="h-full px-3 pb-4 overflow-y-auto">
+            <ul class="space-y-2 font-medium pt-4">
+                <li>
+                    <a href="{% url 'dashboard' %}" class="flex items-center p-2 rounded-lg {% if request.resolver_match.url_name == 'dashboard' %}bg-blue-600 text-white{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'timesheet' %}" class="flex items-center p-2 rounded-lg {% if request.resolver_match.url_name == 'timesheet' %}bg-blue-600 text-white{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
+                        <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+                        <span class="ml-3">Timesheet</span>
+                    </a>
+
+                    <!-- Timesheet Navigation (only visible on timesheet page) -->
+                    {% if request.resolver_match.url_name == 'timesheet' %}
+                    <div class="timesheet-nav mt-2">
+                        <!-- Month Selector -->
+                        <div class="month-selector">
+                            <button class="prev-month" onclick="sidebarNavigateMonth(-1)" title="Mês anterior">
+                                ←
+                            </button>
+                            <div class="month-display" id="sidebar-month-display">
+                                {{ mes_nome|upper }} {{ ano_selecionado }}
+                            </div>
+                            <button class="next-month" onclick="sidebarNavigateMonth(1)" title="Próximo mês">
+                                →
+                            </button>
+                        </div>
+
+                        <!-- Month/Year Dropdowns -->
+                        <select class="month-dropdown" id="sidebar-mes-select" onchange="sidebarChangeMonthYear()">
+                            {% for mes_num, mes_nome_item in meses %}
+                            <option value="{{ mes_num }}" {% if mes_num == mes_selecionado %}selected{% endif %}>
+                                {{ mes_nome_item }}
+                            </option>
+                            {% endfor %}
+                        </select>
+
+                        <select class="year-dropdown" id="sidebar-ano-select" onchange="sidebarChangeMonthYear()">
+                            {% for ano_item in anos %}
+                            <option value="{{ ano_item }}" {% if ano_item == ano_selecionado %}selected{% endif %}>
+                                {{ ano_item }}
+                            </option>
+                            {% endfor %}
+                        </select>
+
+                        <!-- Statistics -->
+                        <div class="month-stats">
+                            <div class="stat">
+                                <i>📅</i>
+                                <span id="sidebar-total-dias">{{ total_registros }} dias</span>
+                            </div>
+                            <div class="stat">
+                                <i>⏱️</i>
+                                <span id="sidebar-total-horas">{{ total_horas }}h</span>
+                            </div>
+                        </div>
+
+                        <!-- Today Button -->
+                        <button class="btn-today" onclick="goToToday()">
+                            Ir para Hoje
+                        </button>
+                    </div>
+                    {% endif %}
+                </li>
+                <li>
+                    <a href="{% url 'perfil' %}" class="flex items-center p-2 rounded-lg {% if request.resolver_match.url_name == 'perfil' or request.resolver_match.url_name == 'perfil_editar' %}bg-blue-600 text-white{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                        <span class="ml-3">Perfil</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="p-4 mt-16" style="margin-left: 300px;">
+        <!-- Messages -->
+        {% include 'components/messages.html' %}
+
+        <!-- Page Content -->
+        <div class="p-4 rounded-lg">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+
+        // Sidebar toggle for mobile
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+        }
+    </script>
+
+    {% block extra_js %}
+    {% endblock %}
+</body>
+</html>

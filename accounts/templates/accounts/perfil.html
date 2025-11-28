@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Perfil - Sistema de Ponto{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            <i data-lucide="user" class="w-7 h-7 mr-2"></i>
+            Meu Perfil
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Visualize e edite suas informações</p>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <!-- Header with action -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-white">Informações do Usuário</h2>
+            <a href="{% url 'perfil_editar' %}" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-gray-100 transition-colors">
+                <i data-lucide="edit" class="w-4 h-4 mr-2"></i>
+                Editar
+            </a>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="px-6 py-6 space-y-6">
+            <!-- Basic Info Section -->
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+                    Informações Básicas
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Username -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            Usuário
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium">{{ user.username }}</p>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            Nome Completo
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium">
+                            {{ user.first_name }} {{ user.last_name }}{% if not user.first_name %}-{% endif %}
+                        </p>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            E-mail
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium">{{ user.email }}</p>
+                    </div>
+
+                    <!-- Cargo -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            Cargo
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium capitalize">{{ user.profile.cargo|default:"-" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Info Section -->
+            <div>
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+                    Informações de Trabalho
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Valor Hora -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            Valor por Hora
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium text-lg">
+                            R$ {{ user.profile.valor_hora|default:"0.00" }}
+                        </p>
+                    </div>
+
+                    <!-- Departamento -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            Departamento
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium">{{ user.profile.departamento|default:"-" }}</p>
+                    </div>
+
+                    <!-- Telefone -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            Telefone
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium">{{ user.profile.telefone|default:"-" }}</p>
+                    </div>
+
+                    <!-- Data Admissão -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            Data de Admissão
+                        </label>
+                        <p class="text-gray-900 dark:text-white font-medium">
+                            {% if user.profile.data_admissao %}
+                                {{ user.profile.data_admissao|date:"d/m/Y" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

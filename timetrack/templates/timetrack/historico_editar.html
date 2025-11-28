@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Registro - Sistema de Ponto{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            <i data-lucide="edit" class="w-7 h-7 mr-2"></i>
+            Editar Registro
+        </h1>
+        <p class="text-gray-600 dark:text-gray-300 mt-1">{{ registro.data|date:"d/m/Y" }} - {{ registro.data|date:"l" }}</p>
+    </div>
+
+    <!-- Form Card (Same structure as registrar_ponto) -->
+    <form method="post" action="{% url 'historico_editar' registro.id %}">
+        {% csrf_token %}
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+            <!-- Work Code Selection -->
+            <div class="mb-6">
+                <label for="work_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Código de Trabalho *
+                </label>
+                <select
+                    name="work_code"
+                    id="work_code"
+                    required
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    {% for code in work_codes %}
+                    <option value="{{ code.id }}" {% if registro.work_code.id == code.id %}selected{% endif %}>
+                        {{ code.codigo }} - {{ code.descricao }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Time Periods (Same grid as registrar_ponto but with registro data) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Período 1 -->
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                        <i data-lucide="sun" class="w-4 h-4 mr-2"></i>
+                        Período 1
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Entrada</label>
+                            <input type="time" name="entrada1" id="entrada1" value="{% if registro.entrada1 %}{{ registro.entrada1|time:'H:i' }}{% endif %}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Saída</label>
+                            <input type="time" name="saida1" id="saida1" value="{% if registro.saida1 %}{{ registro.saida1|time:'H:i' }}{% endif %}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="pt-2 border-t border-gray-200 dark:border-gray-600">
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Horas:</p>
+                            <p id="horas-periodo1" class="text-lg font-bold text-blue-600 dark:text-blue-400">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Período 2 -->
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                        <i data-lucide="coffee" class="w-4 h-4 mr-2"></i>
+                        Período 2
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Entrada</label>
+                            <input type="time" name="entrada2" id="entrada2" value="{% if registro.entrada2 %}{{ registro.entrada2|time:'H:i' }}{% endif %}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Saída</label>
+                            <input type="time" name="saida2" id="saida2" value="{% if registro.saida2 %}{{ registro.saida2|time:'H:i' }}{% endif %}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="pt-2 border-t border-gray-200 dark:border-gray-600">
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Horas:</p>
+                            <p id="horas-periodo2" class="text-lg font-bold text-blue-600 dark:text-blue-400">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Período 3 -->
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                        <i data-lucide="moon" class="w-4 h-4 mr-2"></i>
+                        Período 3
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Entrada</label>
+                            <input type="time" name="entrada3" id="entrada3" value="{% if registro.entrada3 %}{{ registro.entrada3|time:'H:i' }}{% endif %}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Saída</label>
+                            <input type="time" name="saida3" id="saida3" value="{% if registro.saida3 %}{{ registro.saida3|time:'H:i' }}{% endif %}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="pt-2 border-t border-gray-200 dark:border-gray-600">
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Horas:</p>
+                            <p id="horas-periodo3" class="text-lg font-bold text-blue-600 dark:text-blue-400">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Hours -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i data-lucide="clock-3" class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3"></i>
+                        <div>
+                            <p class="text-sm font-medium text-blue-900 dark:text-blue-200">Total de Horas</p>
+                            <p class="text-xs text-blue-700 dark:text-blue-300">Soma de todos os períodos</p>
+                        </div>
+                    </div>
+                    <p id="horas-total" class="text-3xl font-bold text-blue-600 dark:text-blue-400">0.00h</p>
+                </div>
+            </div>
+
+            <!-- Observações -->
+            <div class="mb-6">
+                <label for="observacoes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Observações
+                </label>
+                <textarea name="observacoes" id="observacoes" rows="3"
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Adicione observações sobre o ponto (opcional)">{{ registro.observacoes }}</textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-end space-x-3">
+                <a href="{% url 'historico' %}?mes={{ registro.data.month }}&ano={{ registro.data.year }}"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <i data-lucide="x" class="w-4 h-4 mr-2"></i>
+                    Cancelar
+                </a>
+                <button type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                    <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+                    Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/registrar-ponto.js' %}"></script>
+{% endblock %}

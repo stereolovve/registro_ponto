@@ -1,0 +1,415 @@
+/**
+ * Timesheet Dark-Only Minimalist Stylesheet
+ * Color scheme: Black/Dark Gray + Dark Blue
+ */
+
+/* ============ CSS Variables ============ */
+:root {
+  /* Backgrounds */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-elevated: #242424;
+
+  /* Blues */
+  --blue-primary: #1e40af;
+  --blue-hover: #1e3a8a;
+  --blue-bright: #3b82f6;
+  --blue-subtle: rgba(30, 64, 175, 0.1);
+
+  /* Text */
+  --text-primary: #e5e5e5;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
+
+  /* Borders */
+  --border: #2a2a2a;
+  --border-focus: #1e40af;
+
+  /* Effects */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* ============ Base Styles ============ */
+html {
+  background: var(--bg-primary);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* ============ Sidebar Timesheet Controls ============ */
+.timesheet-nav {
+  padding: 16px 12px;
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+
+.month-display {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  flex: 1;
+  letter-spacing: 0.05em;
+}
+
+.prev-month,
+.next-month {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.125rem;
+}
+
+.prev-month:hover,
+.next-month:hover {
+  background: var(--blue-primary);
+  border-color: var(--blue-primary);
+  color: white;
+}
+
+.month-dropdown,
+.year-dropdown {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.month-dropdown:hover,
+.year-dropdown:hover,
+.month-dropdown:focus,
+.year-dropdown:focus {
+  border-color: var(--blue-primary);
+  outline: none;
+}
+
+.month-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 12px 0;
+}
+
+.month-stats .stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.month-stats .stat i {
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.btn-today {
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--blue-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-today:hover {
+  background: var(--blue-hover);
+}
+
+/* ============ Timesheet Container ============ */
+.timesheet-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+/* ============ Minimalist Table ============ */
+.timesheet-table {
+  width: 100%;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.timesheet-table thead {
+  background: var(--bg-elevated);
+}
+
+.timesheet-table th {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.timesheet-table th[colspan] {
+  text-align: center;
+}
+
+.timesheet-table tbody tr {
+  transition: background 0.15s;
+}
+
+.timesheet-table tbody tr:hover {
+  background: var(--bg-elevated);
+}
+
+.timesheet-table tbody tr.today-row {
+  background: var(--blue-subtle);
+}
+
+.timesheet-table tbody tr.today-row:hover {
+  background: rgba(30, 64, 175, 0.15);
+}
+
+.timesheet-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.timesheet-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============ Minimalist Inputs ============ */
+.time-input,
+.work-code-select {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+}
+
+.time-input:hover,
+.work-code-select:hover {
+  border-color: var(--text-muted);
+}
+
+.time-input:focus,
+.work-code-select:focus {
+  border-color: var(--border-focus);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+.time-input {
+  width: 100%;
+  min-width: 80px;
+}
+
+.work-code-select {
+  width: 100%;
+  min-width: 100px;
+  cursor: pointer;
+}
+
+/* Success state after save */
+.time-input.saved,
+.work-code-select.saved {
+  border-color: var(--blue-bright);
+}
+
+/* ============ Time Cell Container ============ */
+.time-cell {
+  min-width: 100px;
+}
+
+.time-cell > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ============ Clock Buttons ============ */
+.clock-btn {
+  color: var(--blue-bright);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.clock-btn:hover {
+  opacity: 1;
+}
+
+/* ============ Total Hours Cell ============ */
+.total-hours {
+  font-weight: 600;
+  text-align: center;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+  color: var(--text-primary);
+}
+
+/* ============ Sidebar Styles (Dark) ============ */
+aside {
+  background: var(--bg-secondary) !important;
+  border-right: 1px solid var(--border) !important;
+  width: 300px !important;
+}
+
+aside ul li a {
+  color: var(--text-primary) !important;
+  transition: all 0.2s;
+}
+
+aside ul li a:hover {
+  background: var(--bg-elevated) !important;
+}
+
+aside ul li a.bg-blue-600 {
+  background: var(--blue-primary) !important;
+}
+
+aside ul li a.bg-blue-600:hover {
+  background: var(--blue-hover) !important;
+}
+
+/* ============ Navbar (Dark) ============ */
+nav {
+  background: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+nav span,
+nav button {
+  color: var(--text-primary) !important;
+}
+
+/* ============ Toast Notifications ============ */
+.toast {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+}
+
+.toast.success {
+  border-color: var(--blue-bright);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.toast.error {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* ============ Mobile Responsiveness ============ */
+@media (max-width: 768px) {
+  aside {
+    width: 256px !important;
+  }
+
+  .timesheet-nav {
+    padding: 12px 8px;
+  }
+
+  .month-display {
+    font-size: 1rem;
+  }
+
+  .timesheet-table {
+    font-size: 0.8125rem;
+  }
+
+  .timesheet-table th,
+  .timesheet-table td {
+    padding: 10px 8px;
+  }
+
+  .time-input,
+  .work-code-select {
+    font-size: 0.8125rem;
+    padding: 6px 8px;
+  }
+}
+
+/* ============ Accessibility ============ */
+*:focus-visible {
+  outline: 2px solid var(--blue-primary);
+  outline-offset: 2px;
+}
+
+/* ============ Loading States ============ */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--blue-bright);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ============ Utility Classes ============ */
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.bg-elevated {
+  background: var(--bg-elevated);
+}

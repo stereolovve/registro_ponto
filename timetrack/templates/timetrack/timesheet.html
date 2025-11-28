@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Timesheet - Sistema de Ponto{% endblock %}
+
+{% block content %}
+<div class="timesheet-container">
+    <!-- Only the table, nothing else -->
+    <table class="timesheet-table">
+        <thead>
+            <tr>
+                <th style="text-align: left;">Data</th>
+                <th style="text-align: left;">Dia</th>
+                <th style="text-align: center;" colspan="2">Período 1</th>
+                <th style="text-align: center;" colspan="2">Período 2</th>
+                <th style="text-align: center;" colspan="2">Período 3</th>
+                <th style="text-align: center;">Total</th>
+                <th style="text-align: left;">Código</th>
+            </tr>
+            <tr style="font-size: 0.75rem;">
+                <th></th>
+                <th></th>
+                <th style="text-align: center;">Entrada</th>
+                <th style="text-align: center;">Saída</th>
+                <th style="text-align: center;">Entrada</th>
+                <th style="text-align: center;">Saída</th>
+                <th style="text-align: center;">Entrada</th>
+                <th style="text-align: center;">Saída</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day_data in all_days %}
+            <tr
+                class="timesheet-row {% if day_data.is_today %}today-row{% endif %}"
+                data-date="{{ day_data.date_iso }}"
+                data-record-id="{% if day_data.record %}{{ day_data.record.id }}{% endif %}"
+            >
+                <!-- Date -->
+                <td style="font-weight: 500;">
+                    {{ day_data.date_str }}
+                </td>
+
+                <!-- Day Name -->
+                <td style="color: var(--text-secondary);">
+                    {{ day_data.day_name }}
+                </td>
+
+                <!-- Period 1 Entry -->
+                <td class="time-cell">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <input
+                            type="time"
+                            class="time-input"
+                            data-field="entrada1"
+                            data-date="{{ day_data.date_iso }}"
+                            value="{% if day_data.record.entrada1 %}{{ day_data.record.entrada1|time:'H:i' }}{% endif %}"
+                        />
+                        <i data-lucide="clock" class="clock-btn w-4 h-4" onclick="baterPontoInline(this)"></i>
+                    </div>
+                </td>
+
+                <!-- Period 1 Exit -->
+                <td class="time-cell">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <input
+                            type="time"
+                            class="time-input"
+                            data-field="saida1"
+                            data-date="{{ day_data.date_iso }}"
+                            value="{% if day_data.record.saida1 %}{{ day_data.record.saida1|time:'H:i' }}{% endif %}"
+                        />
+                        <i data-lucide="clock" class="clock-btn w-4 h-4" onclick="baterPontoInline(this)"></i>
+                    </div>
+                </td>
+
+                <!-- Period 2 Entry -->
+                <td class="time-cell">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <input
+                            type="time"
+                            class="time-input"
+                            data-field="entrada2"
+                            data-date="{{ day_data.date_iso }}"
+                            value="{% if day_data.record.entrada2 %}{{ day_data.record.entrada2|time:'H:i' }}{% endif %}"
+                        />
+                        <i data-lucide="clock" class="clock-btn w-4 h-4" onclick="baterPontoInline(this)"></i>
+                    </div>
+                </td>
+
+                <!-- Period 2 Exit -->
+                <td class="time-cell">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <input
+                            type="time"
+                            class="time-input"
+                            data-field="saida2"
+                            data-date="{{ day_data.date_iso }}"
+                            value="{% if day_data.record.saida2 %}{{ day_data.record.saida2|time:'H:i' }}{% endif %}"
+                        />
+                        <i data-lucide="clock" class="clock-btn w-4 h-4" onclick="baterPontoInline(this)"></i>
+                    </div>
+                </td>
+
+                <!-- Period 3 Entry -->
+                <td class="time-cell">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <input
+                            type="time"
+                            class="time-input"
+                            data-field="entrada3"
+                            data-date="{{ day_data.date_iso }}"
+                            value="{% if day_data.record.entrada3 %}{{ day_data.record.entrada3|time:'H:i' }}{% endif %}"
+                        />
+                        <i data-lucide="clock" class="clock-btn w-4 h-4" onclick="baterPontoInline(this)"></i>
+                    </div>
+                </td>
+
+                <!-- Period 3 Exit -->
+                <td class="time-cell">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <input
+                            type="time"
+                            class="time-input"
+                            data-field="saida3"
+                            data-date="{{ day_data.date_iso }}"
+                            value="{% if day_data.record.saida3 %}{{ day_data.record.saida3|time:'H:i' }}{% endif %}"
+                        />
+                        <i data-lucide="clock" class="clock-btn w-4 h-4" onclick="baterPontoInline(this)"></i>
+                    </div>
+                </td>
+
+                <!-- Total Hours -->
+                <td class="total-hours">
+                    {% if day_data.record %}
+                        {{ day_data.record.calcular_horas_trabalhadas|floatformat:1 }}h
+                    {% else %}
+                        <span style="color: var(--text-muted);">-</span>
+                    {% endif %}
+                </td>
+
+                <!-- Work Code -->
+                <td>
+                    <select
+                        class="work-code-select"
+                        data-field="work_code_id"
+                        data-date="{{ day_data.date_iso }}"
+                    >
+                        <option value="">-</option>
+                        {% for code in work_codes %}
+                        <option
+                            value="{{ code.id }}"
+                            {% if day_data.record and day_data.record.work_code.id == code.id %}selected{% endif %}
+                        >
+                            {{ code.codigo }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not all_days %}
+    <div style="text-align: center; padding: 48px 0;">
+        <i data-lucide="calendar-off" class="w-16 h-16" style="margin: 0 auto 16px; color: var(--text-muted);"></i>
+        <p style="color: var(--text-secondary);">Nenhum dia neste mês</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/time-utils.js' %}"></script>
+<script src="{% static 'js/timesheet.js' %}"></script>
+<script src="{% static 'js/inline-editor.js' %}"></script>
+<script src="{% static 'js/sidebar-timesheet.js' %}"></script>
+
+<script>
+    // CSRF token for AJAX requests
+    const csrfToken = '{{ csrf_token }}';
+
+    // Current month/year for navigation
+    let currentMonth = {{ mes_selecionado }};
+    let currentYear = {{ ano_selecionado }};
+</script>
+{% endblock %}

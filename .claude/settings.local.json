@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(django-admin startproject:*)",
+      "Bash(python manage.py startapp:*)",
+      "Bash(python manage.py:*)",
+      "Bash(pip install:*)",
+      "Bash(npx create-react-app:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm start)",
+      "Bash(set PORT=3001)",
+      "Bash(taskkill:*)",
+      "Bash(python:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(rm:*)",
+      "Bash(curl:*)",
+      "Bash(set PORT=3002)",
+      "Bash(timeout:*)",
+      "Bash(rename:*)",
+      "Bash(ren:*)",
+      "Bash(mv:*)",
+      "Bash(set PORT=3007)",
+      "Bash(set PORT=3008)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(dir:*)",
+      "Bash(del package.json package-lock.json tailwind.config.js postcss.config.js)",
+      "Bash(findstr:*)"
+    ],
+    "deny": []
+  }
+}
