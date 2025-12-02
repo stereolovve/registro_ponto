@@ -4,30 +4,73 @@
 {% block title %}Timesheet - Sistema de Ponto{% endblock %}
 
 {% block content %}
+<!-- Timesheet Controls -->
+<div class="timesheet-controls">
+    <!-- Header with Month Navigation -->
+    <div class="controls-header">
+        <div class="month-selector">
+            <button class="prev-month" onclick="navigateMonth(-1)" title="Mês anterior">
+                ←
+            </button>
+            <div class="month-display" id="month-display">
+                {{ mes_nome|upper }} {{ ano_selecionado }}
+            </div>
+            <button class="next-month" onclick="navigateMonth(1)" title="Próximo mês">
+                →
+            </button>
+        </div>
+
+        <div class="controls-actions">
+            <select class="month-dropdown" id="mes-select" onchange="changeMonthYear()">
+                {% for mes_num, mes_nome_item in meses %}
+                <option value="{{ mes_num }}" {% if mes_num == mes_selecionado %}selected{% endif %}>
+                    {{ mes_nome_item }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select class="year-dropdown" id="ano-select" onchange="changeMonthYear()">
+                {% for ano_item in anos %}
+                <option value="{{ ano_item }}" {% if ano_item == ano_selecionado %}selected{% endif %}>
+                    {{ ano_item }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <button class="btn-today" onclick="goToToday()">
+                Ir para Hoje
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="month-stats">
+        <div class="stat">
+            <span class="stat-label">Dias Trabalhados</span>
+            <span class="stat-value" id="total-dias">{{ total_registros }}</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Total de Horas</span>
+            <span class="stat-value" id="total-horas">{{ total_horas }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Timesheet Table -->
 <div class="timesheet-container">
-    <!-- Only the table, nothing else -->
     <table class="timesheet-table">
         <thead>
             <tr>
                 <th style="text-align: left;">Data</th>
                 <th style="text-align: left;">Dia</th>
-                <th style="text-align: center;" colspan="2">Período 1</th>
-                <th style="text-align: center;" colspan="2">Período 2</th>
-                <th style="text-align: center;" colspan="2">Período 3</th>
+                <th style="text-align: center;">Entrada</th>
+                <th style="text-align: center;">Saída</th>
+                <th style="text-align: center;">Entrada</th>
+                <th style="text-align: center;">Saída</th>
+                <th style="text-align: center;">Entrada</th>
+                <th style="text-align: center;">Saída</th>
                 <th style="text-align: center;">Total</th>
                 <th style="text-align: left;">Código</th>
-            </tr>
-            <tr style="font-size: 0.75rem;">
-                <th></th>
-                <th></th>
-                <th style="text-align: center;">Entrada</th>
-                <th style="text-align: center;">Saída</th>
-                <th style="text-align: center;">Entrada</th>
-                <th style="text-align: center;">Saída</th>
-                <th style="text-align: center;">Entrada</th>
-                <th style="text-align: center;">Saída</th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -177,7 +220,7 @@
 <script src="{% static 'js/time-utils.js' %}"></script>
 <script src="{% static 'js/timesheet.js' %}"></script>
 <script src="{% static 'js/inline-editor.js' %}"></script>
-<script src="{% static 'js/sidebar-timesheet.js' %}"></script>
+<script src="{% static 'js/timesheet-controls.js' %}"></script>
 
 <script>
     // CSRF token for AJAX requests

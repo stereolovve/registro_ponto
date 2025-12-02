@@ -25,7 +25,13 @@
       "Bash(npx tailwindcss:*)",
       "Bash(dir:*)",
       "Bash(del package.json package-lock.json tailwind.config.js postcss.config.js)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "WebFetch(domain:abacatepay.com)",
+      "Bash(find:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }

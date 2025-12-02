@@ -1,31 +1,30 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - Sistema de Controle de Ponto</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="{% static 'js/theme.js' %}"></script>
 </head>
-<body class="min-h-screen flex items-center justify-center py-12">
+<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 0; background: #f9fafb;">
     <!-- Register Card -->
-    <div class="w-full max-w-md px-4">
-        <div class="bg-card rounded-lg border border-border p-8">
+    <div style="width: 100%; max-width: 28rem; padding: 0 1rem;">
+        <div style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 2rem;">
             <!-- Header -->
-            <div class="text-center mb-8">
-                <h1 class="text-2xl font-semibold text-foreground">Criar Conta</h1>
-                <p class="text-sm text-muted-foreground mt-2">Preencha os dados para se cadastrar</p>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1 style="font-size: 1.5rem; font-weight: 600; color: #1f2937;">Criar Conta</h1>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Preencha os dados para se cadastrar</p>
             </div>
 
             <!-- Messages -->
             {% if messages %}
-            <div class="mb-4 space-y-2">
+            <div style="margin-bottom: 1rem;">
                 {% for message in messages %}
-                <div class="flex items-center p-3 rounded-lg border {% if message.tags == 'error' %}bg-destructive/10 border-destructive text-destructive{% else %}bg-primary/10 border-primary text-primary{% endif %}">
-                    <i data-lucide="alert-circle" class="w-4 h-4 mr-2"></i>
-                    <span class="text-sm">{{ message }}</span>
+                <div style="display: flex; align-items: center; padding: 0.75rem; border-radius: 8px; border: 1px solid {% if message.tags == 'error' %}#ef4444{% else %}#16a34a{% endif %}; background: {% if message.tags == 'error' %}rgba(239, 68, 68, 0.1){% else %}rgba(22, 163, 74, 0.1){% endif %}; color: {% if message.tags == 'error' %}#dc2626{% else %}#16a34a{% endif %}; margin-bottom: 0.5rem;">
+                    <i data-lucide="alert-circle" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                    <span style="font-size: 0.875rem;">{{ message }}</span>
                 </div>
                 {% endfor %}
             </div>
@@ -35,111 +34,102 @@
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}
 
-                <div class="space-y-4">
-                    <!-- Username -->
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-foreground mb-1">
-                            Usuário *
-                        </label>
-                        <input
-                            type="text"
-                            name="username"
-                            id="username"
-                            required
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="Digite seu usuário"
-                        >
-                    </div>
-
-                    <!-- First Name -->
-                    <div>
-                        <label for="first_name" class="block text-sm font-medium text-foreground mb-1">
-                            Primeiro Nome
-                        </label>
-                        <input
-                            type="text"
-                            name="first_name"
-                            id="first_name"
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="Digite seu primeiro nome"
-                        >
-                    </div>
-
-                    <!-- Last Name -->
-                    <div>
-                        <label for="last_name" class="block text-sm font-medium text-foreground mb-1">
-                            Sobrenome
-                        </label>
-                        <input
-                            type="text"
-                            name="last_name"
-                            id="last_name"
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="Digite seu sobrenome"
-                        >
-                    </div>
-
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-foreground mb-1">
-                            E-mail *
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            required
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="seu@email.com"
-                        >
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-foreground mb-1">
-                            Senha *
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            required
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="Mínimo 6 caracteres"
-                        >
-                    </div>
-
-                    <!-- Password Confirmation -->
-                    <div>
-                        <label for="password2" class="block text-sm font-medium text-foreground mb-1">
-                            Confirmar Senha *
-                        </label>
-                        <input
-                            type="password"
-                            name="password2"
-                            id="password2"
-                            required
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="Digite a senha novamente"
-                        >
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button
-                        type="submit"
-                        class="w-full flex justify-center items-center py-2 px-4 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
+                <div style="margin-bottom: 1rem;">
+                    <label for="username" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        Usuário *
+                    </label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        required
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="Digite seu usuário"
                     >
-                        <i data-lucide="user-check" class="w-4 h-4 mr-2"></i>
-                        Cadastrar
-                    </button>
                 </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label for="first_name" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        Primeiro Nome
+                    </label>
+                    <input
+                        type="text"
+                        name="first_name"
+                        id="first_name"
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="Digite seu primeiro nome"
+                    >
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label for="last_name" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        Sobrenome
+                    </label>
+                    <input
+                        type="text"
+                        name="last_name"
+                        id="last_name"
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="Digite seu sobrenome"
+                    >
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label for="email" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        E-mail *
+                    </label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        required
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="seu@email.com"
+                    >
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label for="password" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        Senha *
+                    </label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="Mínimo 6 caracteres"
+                    >
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="password2" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        Confirmar Senha *
+                    </label>
+                    <input
+                        type="password"
+                        name="password2"
+                        id="password2"
+                        required
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="Digite a senha novamente"
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 0.625rem 1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; background: #16a34a; color: white; border: none; cursor: pointer;"
+                >
+                    <i data-lucide="user-check" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                    Cadastrar
+                </button>
             </form>
 
             <!-- Login Link -->
-            <div class="mt-6 text-center">
-                <p class="text-sm text-muted-foreground">
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <p style="font-size: 0.875rem; color: #6b7280;">
                     Já tem uma conta?
-                    <a href="{% url 'login' %}" class="font-medium text-primary hover:underline">
+                    <a href="{% url 'login' %}" style="font-weight: 500; color: #16a34a; text-decoration: none;">
                         Faça login
                     </a>
                 </p>

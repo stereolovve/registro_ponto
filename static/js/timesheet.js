@@ -20,8 +20,8 @@ function updateSummaryStats() {
         }
     });
 
-    // Update sidebar statistics
-    updateSidebarStats(recordCount, totalHours.toFixed(1));
+    // Update statistics
+    updateStats(recordCount, totalHours.toFixed(1));
 }
 
 /**

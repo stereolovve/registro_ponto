@@ -249,13 +249,19 @@ function updateRowTotalHours(row) {
 
     const totalCell = row.querySelector('.total-hours');
     if (totalCell) {
+        // Adicionar classe de atualização para feedback visual
+        totalCell.classList.add('updating');
+
         if (total > 0) {
             totalCell.innerHTML = `${total.toFixed(1)}h`;
-            totalCell.classList.remove('text-gray-400');
-            totalCell.classList.add('font-semibold', 'text-gray-900', 'dark:text-white');
+            totalCell.style.color = '#16a34a';
+            totalCell.style.fontWeight = '600';
         } else {
-            totalCell.innerHTML = '<span class="text-gray-400">-</span>';
+            totalCell.innerHTML = '<span style="color: var(--text-muted);">-</span>';
         }
+
+        // Remover classe após animação
+        setTimeout(() => totalCell.classList.remove('updating'), 300);
     }
 }
 
@@ -336,10 +342,10 @@ function handleEnterNavigation(e, currentInput) {
 function setupInlineEditing() {
     // Time inputs
     document.querySelectorAll('input.time-input').forEach(input => {
-        // Save on blur (when user leaves the field)
-        input.addEventListener('blur', debounce(function() {
+        // Save on blur (when user leaves the field) - sem debounce para salvar imediatamente
+        input.addEventListener('blur', function() {
             saveTimeInput(this);
-        }, 300));
+        });
 
         // Keyboard navigation
         input.addEventListener('keydown', function(e) {
@@ -347,11 +353,11 @@ function setupInlineEditing() {
             handleEnterNavigation(e, this);
         });
 
-        // Real-time hour calculation on input
-        input.addEventListener('input', debounce(function() {
+        // Real-time hour calculation on input (sem debounce para atualização instantânea)
+        input.addEventListener('input', function() {
             const row = this.closest('tr');
             updateRowTotalHours(row);
-        }, 200));
+        });
     });
 
     // Work code selects

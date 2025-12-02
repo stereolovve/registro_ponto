@@ -1,31 +1,30 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sistema de Controle de Ponto</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="{% static 'js/theme.js' %}"></script>
 </head>
-<body class="min-h-screen flex items-center justify-center">
+<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f9fafb;">
     <!-- Login Card -->
-    <div class="w-full max-w-md px-4">
-        <div class="bg-card rounded-lg border border-border p-8">
+    <div style="width: 100%; max-width: 28rem; padding: 0 1rem;">
+        <div style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 2rem;">
             <!-- Header -->
-            <div class="text-center mb-8">
-                <h1 class="text-2xl font-semibold text-foreground">Sistema de Ponto</h1>
-                <p class="text-sm text-muted-foreground mt-2">Entre com suas credenciais</p>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1 style="font-size: 1.5rem; font-weight: 600; color: #1f2937;">Sistema de Ponto</h1>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Entre com suas credenciais</p>
             </div>
 
             <!-- Messages -->
             {% if messages %}
-            <div class="mb-4 space-y-2">
+            <div style="margin-bottom: 1rem;">
                 {% for message in messages %}
-                <div class="flex items-center p-3 rounded-lg border {% if message.tags == 'error' %}bg-destructive/10 border-destructive text-destructive{% else %}bg-primary/10 border-primary text-primary{% endif %}">
-                    <i data-lucide="alert-circle" class="w-4 h-4 mr-2"></i>
-                    <span class="text-sm">{{ message }}</span>
+                <div style="display: flex; align-items: center; padding: 0.75rem; border-radius: 8px; border: 1px solid {% if message.tags == 'error' %}#ef4444{% else %}#16a34a{% endif %}; background: {% if message.tags == 'error' %}rgba(239, 68, 68, 0.1){% else %}rgba(22, 163, 74, 0.1){% endif %}; color: {% if message.tags == 'error' %}#dc2626{% else %}#16a34a{% endif %}; margin-bottom: 0.5rem;">
+                    <i data-lucide="alert-circle" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                    <span style="font-size: 0.875rem;">{{ message }}</span>
                 </div>
                 {% endfor %}
             </div>
@@ -35,54 +34,49 @@
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
 
-                <div class="space-y-4">
-                    <!-- Username -->
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-foreground mb-1">
-                            Usuário
-                        </label>
-                        <input
-                            type="text"
-                            name="username"
-                            id="username"
-                            required
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="Digite seu usuário"
-                            autofocus
-                        >
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-foreground mb-1">
-                            Senha
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            required
-                            class="block w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-                            placeholder="Digite sua senha"
-                        >
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button
-                        type="submit"
-                        class="w-full flex justify-center items-center py-2 px-4 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
+                <div style="margin-bottom: 1rem;">
+                    <label for="username" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        Usuário
+                    </label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        required
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="Digite seu usuário"
+                        autofocus
                     >
-                        <i data-lucide="log-in" class="w-4 h-4 mr-2"></i>
-                        Entrar
-                    </button>
                 </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="password" style="display: block; font-size: 0.875rem; font-weight: 500; color: #1f2937; margin-bottom: 0.25rem;">
+                        Senha
+                    </label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required
+                        style="display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #1f2937; font-size: 0.875rem;"
+                        placeholder="Digite sua senha"
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 0.625rem 1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; background: #16a34a; color: white; border: none; cursor: pointer;"
+                >
+                    <i data-lucide="log-in" style="width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+                    Entrar
+                </button>
             </form>
 
             <!-- Register Link -->
-            <div class="mt-6 text-center">
-                <p class="text-sm text-muted-foreground">
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <p style="font-size: 0.875rem; color: #6b7280;">
                     Não tem uma conta?
-                    <a href="{% url 'register' %}" class="font-medium text-primary hover:underline">
+                    <a href="{% url 'register' %}" style="font-weight: 500; color: #16a34a; text-decoration: none;">
                         Cadastre-se
                     </a>
                 </p>

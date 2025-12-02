@@ -1,0 +1,438 @@
+/**
+ * Timesheet Light Green Minimalist Stylesheet
+ * Color scheme: White/Light Gray + Green (abacatepay inspired)
+ */
+
+/* ============ CSS Variables ============ */
+:root {
+  /* Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-elevated: #ffffff;
+
+  /* Greens */
+  --green-primary: #16a34a;
+  --green-hover: #15803d;
+  --green-bright: #22c55e;
+  --green-subtle: rgba(22, 163, 74, 0.08);
+
+  /* Text */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+
+  /* Borders */
+  --border: #e5e7eb;
+  --border-focus: #16a34a;
+
+  /* Effects */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+/* ============ Base Styles ============ */
+html {
+  background: var(--bg-primary);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* ============ Timesheet Controls (Above Table) ============ */
+.timesheet-controls {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.controls-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.month-display {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  min-width: 180px;
+  text-align: center;
+}
+
+.prev-month,
+.next-month {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.prev-month:hover,
+.next-month:hover {
+  background: var(--green-primary);
+  border-color: var(--green-primary);
+  color: white;
+}
+
+.controls-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.month-dropdown,
+.year-dropdown {
+  padding: 8px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  min-width: 120px;
+}
+
+.month-dropdown:hover,
+.year-dropdown:hover,
+.month-dropdown:focus,
+.year-dropdown:focus {
+  border-color: var(--green-primary);
+  outline: none;
+}
+
+.month-stats {
+  display: flex;
+  gap: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.month-stats .stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.month-stats .stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.month-stats .stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--green-primary);
+}
+
+.btn-today {
+  padding: 8px 16px;
+  background: var(--green-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.btn-today:hover {
+  background: var(--green-hover);
+}
+
+/* ============ Timesheet Container ============ */
+.timesheet-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+/* ============ Minimalist Table ============ */
+.timesheet-table {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.timesheet-table thead {
+  background: var(--bg-secondary);
+}
+
+.timesheet-table th {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.timesheet-table th[colspan] {
+  text-align: center;
+}
+
+.timesheet-table tbody tr {
+  transition: background 0.15s;
+}
+
+.timesheet-table tbody tr:hover {
+  background: var(--bg-secondary);
+}
+
+.timesheet-table tbody tr.today-row {
+  background: var(--green-subtle);
+}
+
+.timesheet-table tbody tr.today-row:hover {
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.timesheet-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.timesheet-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============ Minimalist Inputs ============ */
+.time-input,
+.work-code-select {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+}
+
+.time-input:hover,
+.work-code-select:hover {
+  border-color: var(--text-muted);
+}
+
+.time-input:focus,
+.work-code-select:focus {
+  border-color: var(--border-focus);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.15);
+}
+
+.time-input {
+  width: 100%;
+  min-width: 80px;
+}
+
+.work-code-select {
+  width: 100%;
+  min-width: 100px;
+  cursor: pointer;
+}
+
+/* Success state after save */
+.time-input.saved,
+.work-code-select.saved {
+  border-color: var(--green-bright);
+}
+
+/* ============ Time Cell Container ============ */
+.time-cell {
+  min-width: 100px;
+}
+
+.time-cell > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ============ Clock Buttons ============ */
+.clock-btn {
+  color: var(--green-primary);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.clock-btn:hover {
+  opacity: 1;
+}
+
+/* ============ Total Hours Cell ============ */
+.total-hours {
+  font-weight: 600;
+  text-align: center;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+  color: var(--green-primary);
+}
+
+/* ============ Toast Notifications ============ */
+.toast {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+}
+
+.toast.success {
+  border-color: var(--green-bright);
+  background: rgba(34, 197, 94, 0.08);
+  color: var(--green-primary);
+}
+
+.toast.error {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+}
+
+/* ============ Mobile Responsiveness ============ */
+@media (max-width: 768px) {
+  .timesheet-controls {
+    padding: 16px;
+  }
+
+  .controls-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .month-selector {
+    width: 100%;
+  }
+
+  .controls-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .month-dropdown,
+  .year-dropdown,
+  .btn-today {
+    width: 100%;
+  }
+
+  .month-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .month-display {
+    font-size: 1rem;
+  }
+
+  .timesheet-table {
+    font-size: 0.8125rem;
+  }
+
+  .timesheet-table th,
+  .timesheet-table td {
+    padding: 10px 8px;
+  }
+
+  .time-input,
+  .work-code-select {
+    font-size: 0.8125rem;
+    padding: 6px 8px;
+  }
+}
+
+/* ============ Accessibility ============ */
+*:focus-visible {
+  outline: 2px solid var(--green-primary);
+  outline-offset: 2px;
+}
+
+/* ============ Loading States ============ */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--green-bright);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ============ Utility Classes ============ */
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.bg-elevated {
+  background: var(--bg-elevated);
+}
+
+/* ============ Total Hours Animation ============ */
+.total-hours.updating {
+  animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
